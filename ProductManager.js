@@ -3,6 +3,7 @@ const fs = require('fs');
 class ProductManager {
     constructor(filePath) {
         this.path = filePath;
+        this.products = [];
         this.loadProductsFromFile();
     }
 
@@ -11,9 +12,7 @@ class ProductManager {
             const data = await fs.promises.readFile(this.path, 'utf8');
             this.products = JSON.parse(data);
         } catch (error) {
-            if (error.code === 'No such file') {
-                this.products = [];
-            } else {
+            if (error.code !== 'No such file') {
                 throw new Error(`Upps something went wrong loading product from the file: ${error.message}`);
             }
         }
